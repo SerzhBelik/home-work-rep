@@ -1,0 +1,117 @@
+
+    public static void main(String[] args) {
+        TeamMember teamMember1 = new TeamMember("Alex");// создаем список участников
+        TeamMember teamMember2 = new TeamMember("Bob");
+        TeamMember teamMember3 = new TeamMember("Jane");
+        TeamMember teamMember4 = new TeamMember("Kate");
+
+
+        Course c = new Course(4); // Создаем полосу препятствий
+        Team team = new Team("Atlanta", teamMember1, teamMember2, teamMember3, teamMember4); // Создаем команду
+
+        c.doIt(team); // Просим команду пройти полосу
+
+        team.showResults(); // Показываем результаты
+        }
+
+
+private double[] barriersHeight;
+    private int barriersNumber;
+    Course(int barriersNumber){
+        barriersHeight = new double[barriersNumber];
+        this.barriersNumber = barriersNumber;
+        for(int i = 0; i<barriersNumber; i++){
+        barriersHeight[i] = Math.random()+1;
+        }
+    }
+
+    public void doIt(Team team){
+        for(int i = 0; i<team.teamMembers.length; i++){
+            for (int j = 0; j<barriersNumber; j++){
+                if(getJumpHeight()>barriersHeight[j]){
+                    team.teamMembers[i].personalScore += (int)(barriersHeight[j]*100);
+                    if (j==team.teamMembers.length-1){
+                        team.teamScore += team.teamMembers[i].personalScore;
+                        team.teamMembers[i].setPassedStatus(TeamMember.PASSED);
+                    }
+                } else {
+                    team.teamMembers[i].setPassedStatus(TeamMember.DISCQUAL);
+                    team.teamScore += team.teamMembers[i].personalScore;
+                    break;
+                }
+        }
+        }
+    }
+
+    public double getJumpHeight() {
+        return Math.random()+1.2;
+    }
+
+private String teamName;
+    TeamMember[] teamMembers;
+    int teamScore = 0;
+    Team(String teamName, TeamMember ... teamMemberName){
+        this.teamName = teamName;
+        teamMembers = new TeamMember[teamMemberName.length];
+
+        for(int i = 0; i < teamMemberName.length; i++) {
+            teamMembers[i] = teamMemberName[i];
+        }
+
+    }
+
+    public String getTeamMembersInfo(){
+        StringBuilder s = new StringBuilder("Team " + teamName + " consist: ");
+
+        for (int i =0; i < this.teamMembers.length; i++){
+
+                if(i!=0) s.append(", ");
+                s.append(teamMembers[i].getName());
+        }
+        s.append(".");
+        return s.toString();
+    }
+
+    public String getWhoPassed(){
+        StringBuilder s = new StringBuilder("Course passed: ");
+        int j = 0;
+        for (int i =0; i < this.teamMembers.length; i++){
+            if(teamMembers[i].getPassedStatus().equals(TeamMember.PASSED)) {
+                if(j!=0) s.append(", ");
+                s.append(teamMembers[i].getName());
+                j++;
+            } else continue;
+        }
+        s.append(".");
+        return s.toString();
+    }
+
+    public void showResults(){
+        System.out.println("Общий результат команды " + this.teamName + ": " + this.teamScore);
+        System.out.println("Личные результаты членов команды:");
+        for(int i = 0; i<this.teamMembers.length; i++){
+            System.out.println(teamMembers[i].getName() + ":" + teamMembers[i].personalScore + " - " + teamMembers[i].getPassedStatus());
+        }
+    }
+
+ private  String name;
+    private  String passedStatus = DID_NOT_PASS;
+    final static String DID_NOT_PASS = "did not pass obstacle course!";
+    final static String PASSED = "passed course!";
+    static String DISCQUAL = "disqualified!";
+    int personalScore =0;
+
+    TeamMember(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+    public String getPassedStatus(){
+        return this.passedStatus;
+    }
+
+    public void setPassedStatus(String passedStatus){
+        this.passedStatus = passedStatus;
+    }
