@@ -1,15 +1,18 @@
 package HomeWork2;
 
-import static java.lang.Float.isNaN;
+
 
 public class Main {
 
     public static void main(String[] args) {
 
-        String[][] arr = {{"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}}; /*new String[4][4];
-        arr = {{"1", "2", "3", "4"}, {"1", "2", "3", "4"}};*/
+        String[][] arr = {{"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}};
+        String[][] arr1 = {{"1", "2", "3", "f"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"}};
+        String[][] arr2 = {{"1", "2", "3", "f"}, {"1", "2", "3", "4"}, {"1", "2", "3", "4"} };
 
-            System.out.println(converStringArrayToIntAndSum(arr));
+            System.out.println("Сумма элементов массива: "+converStringArrayToIntAndSum(arr));
+            System.out.println("Сумма элементов массива: "+converStringArrayToIntAndSum(arr1));
+            System.out.println("Сумма элементов массива: "+converStringArrayToIntAndSum(arr2));
 
 
 
@@ -19,26 +22,42 @@ public class Main {
 
     public static int converStringArrayToIntAndSum (String[][] arr) {
         int sum =0;
+        int dataExcY;
+        int dataExcX;
         try {
-            if(arr.length!=4||arr[0].length!=4) throw new MyArraySizeException();
+            if(arr.length!=4||arr[0].length!=4) throw new MyArraySizeException("Размер массива задан не верно!");
 
             for (int i = 0; i<arr.length; i++){
                 for(int j = 0; j<arr[0].length; j++){
 
-                        if(Float.isNaN((float)Integer.parseInt(arr[i][j]))) throw new MyArrayDataException();
+                        if(!isNumeric((arr[i][j]))) {
+                            dataExcY = i;
+                            dataExcX = j;
+                            throw new MyArrayDataException(dataExcY, dataExcX);
+                        }
                         sum += Integer.parseInt(arr[i][j]);
 
                 }
             }
 
-
         } catch (MyArraySizeException e){
-            System.out.println("Размер массива задан не верно!");
+
         }catch (MyArrayDataException e){
-            System.out.println("Элементы массива заданы не верно!");
+           sum =0;
         }
 
 
         return sum;
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
     }
 }
