@@ -11,14 +11,30 @@ public class Main {
                       "Sergeev", "Alexandrov", "Volodin", "Maximov", "Alexandrov", "Ivanov", "Petrov", "Andreev", "Ivanov", "Smirnov"};
 
 	List<String> lastnames = Arrays.asList(names);
+	HashSet<String> ln = new HashSet<>(lastnames);
 
-	getUniqueLastname(lastnames);
+	getUniqueLastname(ln);
 
-	
+	getReiteration(ln, names);
     }
 
-    private static void getUniqueLastname(List<String> lastames) {
-        HashSet<String> ln = new HashSet<>(lastames);
+
+
+    private static void getReiteration(HashSet<String> ln, String[] names) {
+
+        for (String lastname:ln) {
+            int reiterations= 0;
+            for (String name:names){
+                if (lastname.equals(name)) reiterations++;
+            }
+            System.out.println(lastname+" встречается " + reiterations + "раз(а)");
+        }
+    }
+
+
+    
+    private static void getUniqueLastname(HashSet<String> ln) {
+
         System.out.println(ln);
     }
 
