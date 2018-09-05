@@ -45,7 +45,7 @@ public class Main {
         MyThread thread2 = new MyThread(a2);
         thread1.start();
         thread2.start();
-gdfgdfg
+
         try {
             thread1.join();
             thread2.join();
