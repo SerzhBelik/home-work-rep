@@ -1,9 +1,9 @@
 package HomeWork6;
 
 public class MyChat {
-    protected static void main(String[] args){
-        Conroller conroller = new ClientController;
-        ClientUI clientUI = new Client(controller);
+    public static void main(String[] args){
+        Controller controller = new ClientController();
+        ClientUI clientUI = new ChatWindow(controller);
         controller.showUI(clientUI);
     }
 }

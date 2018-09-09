@@ -7,9 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class СhatWindow extends JFrame implements ClientUI {
+public class ChatWindow extends JFrame implements ClientUI {
     final static int WIDTH = 400;
     final static int HEIGHT = 600;
+    private Controller controller;
 
     JTextArea textArea = new JTextArea();
     JPanel panel = new JPanel();
@@ -17,7 +18,9 @@ public class СhatWindow extends JFrame implements ClientUI {
     JButton enter = new JButton("Enter");
     JScrollPane jsp = new JScrollPane(inputText);
 
-    public СhatWindow(){
+    public ChatWindow(Controller controller){
+        this.controller = controller;
+
         setTitle("Home work chat");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(Toolkit.getDefaultToolkit ().getScreenSize ().width/2-WIDTH/2,
@@ -36,7 +39,7 @@ public class СhatWindow extends JFrame implements ClientUI {
 
                 if(e.getKeyCode() == KeyEvent.VK_ENTER) {
                     e.consume();
-                    sendText(inputText.getText());
+                    sendText();
                 }
             }
         });
@@ -45,7 +48,7 @@ public class СhatWindow extends JFrame implements ClientUI {
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sendText(inputText.getText());
+                sendText();
             }
         });
 
@@ -61,9 +64,9 @@ public class СhatWindow extends JFrame implements ClientUI {
 
     }
 
-    private void sendText(String text) {
+    private void sendText() {
         controller.sendMessage(inputText.getText());
-//        textArea.append("Name: " + text+ "\n"+ "\n");
+//        textArea.append("Name: " + inputText.getText()+ "\n"+ "\n");
         inputText.setText(null);
         inputText.setCaretPosition(0);
 
