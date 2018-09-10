@@ -23,16 +23,23 @@ public class MyServer {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 
 
-//            ConsoleThread ct = new ConsoleThread(socket);
-//            ct.start();
+            ConsoleThread ct = new ConsoleThread(socket);
+            ct.start();
 
             while (true) {
-//                if (scanner.nextLine()==null) continue;
+            if (scanner.hasNextLine()) {
                 String text = scanner.nextLine();
-                if (text.equals("end"))break;
-                printWriter.println((new Date().toString()) + "\n" + "Name: " + text+ "\n");
+                if (text.equals("end")) break;
+//                System.out.println(text);
+                if (text.length() > 6 && text.substring(0, 7).equals("@Client")) {
+
+                    System.out.println(text);
+                    continue;
+                }
+                printWriter.println((new Date().toString()) + "\n" + "Name: " + text + "\n");
 //                ConsoleThread ct = new ConsoleThread(socket);
 //                ct.start();
+            }
             }
 //            ConsoleThread ct = new ConsoleThread(socket);
 //            ct.start();

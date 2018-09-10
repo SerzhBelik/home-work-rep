@@ -66,7 +66,6 @@ public class ChatWindow extends JFrame implements ClientUI {
 
     private void sendText() {
         controller.sendMessage(inputText.getText());
-//        textArea.append("Name: " + inputText.getText()+ "\n"+ "\n");
         inputText.setText(null);
         inputText.setCaretPosition(0);
 

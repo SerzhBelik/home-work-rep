@@ -33,14 +33,24 @@ public class ClientController implements Controller{
         } catch (IOException e){
             e.printStackTrace();
         }
+
+        ClnConsoleThread cct = new ClnConsoleThread(sock);
+        cct.start();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     while (true) {
+
                         if (in.hasNext()) {
                             String w = in.nextLine();
                             if (w.equals("end session")) break;
+//                            System.out.println(w.substring(0, 7));
+                            if (w.length()>7&&w.substring(0, 7).equals("@Server")){
+                                System.out.println(w);
+                                continue;
+                            }
                             ui.addMessage(w);
 //                            System.out.println(w);
                         }
@@ -51,12 +61,6 @@ public class ClientController implements Controller{
             }
         }).start();
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                consoleSend();
-//            }
-//        }).start();
     }
 
 
@@ -77,25 +81,6 @@ public class ClientController implements Controller{
         }
     }
 
-//    public static void consoleSend(){
-//        Socket consoleSock;
-//        try {
-//            consoleSock = new Socket(SERVER_ADR, 8189);
-//            Scanner ClnConsoleScanner = new Scanner(System.in);
-//            Scanner ServConsoleScanner = new Scanner(consoleSock.getInputStream());
-//            PrintWriter consolePrintWriter = new PrintWriter(consoleSock.getOutputStream(), true);
-//
-//            while (true) {
-//                String consoleText = ClnConsoleScanner.nextLine();
-//                consolePrintWriter.println(consoleText);
-//
-//                String incomingText = ServConsoleScanner.nextLine();
-//                System.out.println(incomingText);
-//
-//            }
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-//    }
+
 
 }
