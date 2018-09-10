@@ -23,14 +23,19 @@ public class MyServer {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 
 
-
+//            ConsoleThread ct = new ConsoleThread(socket);
+//            ct.start();
 
             while (true) {
+//                if (scanner.nextLine()==null) continue;
                 String text = scanner.nextLine();
                 if (text.equals("end"))break;
                 printWriter.println((new Date().toString()) + "\n" + "Name: " + text+ "\n");
-
+//                ConsoleThread ct = new ConsoleThread(socket);
+//                ct.start();
             }
+//            ConsoleThread ct = new ConsoleThread(socket);
+//            ct.start();
 
 //            new Thread(new Runnable() {  // поток для обмена сообщениями через консоль
 //                @Override
