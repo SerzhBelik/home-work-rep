@@ -32,8 +32,8 @@ public class ConsoleThread extends Thread {
                     if (myText.equals("end")) break;
                     pw.println("@Server: " + (new Date().toString())+ " " + myText);
 
-                    if(is.hasNextLine()&&is.nextLine().length()> 6 && is.nextLine().substring(0, 7).equals("@Client")){
-                        if(is.nextLine().length()> 6 && is.nextLine().substring(0, 7).equals("@Client")){
+                    if(is.hasNextLine()){
+                        if(is.nextLine().length()> 7 && is.nextLine().substring(0, 7).equals("@Client")){
                             System.out.println(is.nextLine());
                         }
                     }
