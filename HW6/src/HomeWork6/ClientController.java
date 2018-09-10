@@ -34,7 +34,7 @@ public class ClientController implements Controller{
             e.printStackTrace();
         }
 
-        ConsoleThread cct = new ConsoleThread(sock, "@Client");
+        ClnConsoleThread cct = new ClnConsoleThread(sock);
         cct.start();
 
         new Thread(new Runnable() {

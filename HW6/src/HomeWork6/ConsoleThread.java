@@ -10,15 +10,13 @@ import java.util.Scanner;
 public class ConsoleThread extends Thread {
 
     String myText;
-    String call;
     Scanner cs ;
     Scanner is;
     PrintWriter pw;
     Socket s= null;
 
-    public ConsoleThread(Socket s, String call){
+    public ConsoleThread(Socket s){
         this.s =s;
-        this.call = call;
     }
 
     public void run(){
@@ -32,10 +30,10 @@ public class ConsoleThread extends Thread {
                 if (cs.hasNextLine()) {
                     myText = cs.nextLine();
                     if (myText.equals("end")) break;
-                    pw.println(call + ": " + (new Date().toString())+ " " + myText);
+                    pw.println("@Server: " + (new Date().toString())+ " " + myText);
 
                     if(is.hasNextLine()&&is.nextLine().length()> 7){
-                        if(is.nextLine().substring(0, 7).equals(call)){
+                        if(is.nextLine().substring(0, 7).equals("@Client")){
                             System.out.println(is.nextLine());
                         }
                     }
