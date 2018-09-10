@@ -22,7 +22,7 @@ public class MyServer {
             Scanner scanner = new Scanner(socket.getInputStream());
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            ConsoleThread ct = new ConsoleThread(socket); // поток для консоли
+            ConsoleThread ct = new ConsoleThread(socket, "@Server"); // поток для консоли
             ct.start();
 
             while (true) {
@@ -30,7 +30,7 @@ public class MyServer {
                 String text = scanner.nextLine();
                 if (text.equals("end")) break;
 
-                if (text.length() > 6 && text.substring(0, 7).equals("@Client")) {
+                if (text.length() > 7 && text.substring(0, 7).equals("@Client")) {
 
                     System.out.println(text);
                     continue;
