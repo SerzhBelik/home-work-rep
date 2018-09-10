@@ -22,35 +22,26 @@ public class MyServer {
             Scanner scanner = new Scanner(socket.getInputStream());
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-
-            ConsoleThread ct = new ConsoleThread(socket);
+            ConsoleThread ct = new ConsoleThread(socket); // поток для консоли
             ct.start();
 
             while (true) {
             if (scanner.hasNextLine()) {
                 String text = scanner.nextLine();
                 if (text.equals("end")) break;
-//                System.out.println(text);
+
                 if (text.length() > 6 && text.substring(0, 7).equals("@Client")) {
 
                     System.out.println(text);
                     continue;
                 }
                 printWriter.println((new Date().toString()) + "\n" + "Name: " + text + "\n");
-//                ConsoleThread ct = new ConsoleThread(socket);
-//                ct.start();
-            }
-            }
-//            ConsoleThread ct = new ConsoleThread(socket);
-//            ct.start();
 
-//            new Thread(new Runnable() {  // поток для обмена сообщениями через консоль
-//                @Override
-//                public void run() {
-//                    consoleSend(serverSocket);
-//                }
-//            }).start();
-//
+            }
+            }
+
+
+
         }catch (IOException e){
             System.out.println("Server isn't started");
         } finally {
@@ -60,44 +51,6 @@ public class MyServer {
                 e.printStackTrace();
             }
         }
-//
-//        }
 
-//    }
-
-//    public static void consoleSend(ServerSocket serverSocket){
-//
-//        try{
-//
-//            System.out.println("Server is started");
-//            Socket consoleSocket = serverSocket.accept();
-//            System.out.println("client connect");
-//            Scanner ServConsoleScanner = new Scanner(System.in);
-//            Scanner ClnConsoleScanner = new Scanner(consoleSocket.getInputStream());
-//            PrintWriter consolePrintWriter = new PrintWriter(consoleSocket.getOutputStream(), true);
-//
-//
-//
-//            while (true) {
-//                String consoleText = ServConsoleScanner.nextLine();
-//                consolePrintWriter.println(consoleText);
-//
-//                String incomingText = ClnConsoleScanner.nextLine();
-//                System.out.println(incomingText);
-//
-//            }
-//
-//        } catch (IOException e){
-//            System.out.println("Server isn't started");
-//        } finally {
-//            try {
-//                consoleServerSocket.close();
-//            } catch (IOException e){
-//                e.printStackTrace();
-//            }
-//
-//        }
-//
-//
     }
 }

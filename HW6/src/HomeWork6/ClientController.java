@@ -46,13 +46,13 @@ public class ClientController implements Controller{
                         if (in.hasNext()) {
                             String w = in.nextLine();
                             if (w.equals("end session")) break;
-//                            System.out.println(w.substring(0, 7));
+
                             if (w.length()>7&&w.substring(0, 7).equals("@Server")){
                                 System.out.println(w);
                                 continue;
                             }
                             ui.addMessage(w);
-//                            System.out.println(w);
+
                         }
                     }
                 }catch (Exception e){
