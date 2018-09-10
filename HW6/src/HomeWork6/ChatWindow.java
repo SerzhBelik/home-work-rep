@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+
 public class ChatWindow extends JFrame implements ClientUI {
     final static int WIDTH = 450;
     final static int HEIGHT = 600;

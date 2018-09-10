@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class ConsoleThread extends Thread {
 
+
     String myText;
     Scanner cs ;
     Scanner is;

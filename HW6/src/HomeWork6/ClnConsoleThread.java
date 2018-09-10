@@ -22,7 +22,6 @@ public class ClnConsoleThread extends Thread {
             is = new Scanner(s.getInputStream());
             pw = new PrintWriter(s.getOutputStream());
 
-
             while (true) {
                 if (cs.hasNextLine()) {
                     myText = cs.nextLine();

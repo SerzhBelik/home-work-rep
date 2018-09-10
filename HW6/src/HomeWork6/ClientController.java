@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-
 public class ClientController implements Controller{
     private final static String SERVER_ADR = "localhost";
     private final static int SERVER_PORT = 8189;
