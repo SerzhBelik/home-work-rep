@@ -25,13 +25,8 @@ public class ClientHandler {
                 auth();
                 while (true){
                     String str = scanner.nextLine();
-
                     if(str != null && !str.isEmpty() && !str.startsWith("/w")) server.sendBroadcastMessage(userName + ": " + str);
-
-                    if (str.startsWith("/w")){
-
-                        server.sendPrivetMessage(str, this.userName);
-                    }
+                    if (str.startsWith("/w")) server.sendPrivetMessage(str, this.userName);
                 }
             }).start();
         } catch (IOException e) {
@@ -65,7 +60,6 @@ public class ClientHandler {
             } else {
                 printWriter.println("Invalid command!");
             }
-
         }
     }
 

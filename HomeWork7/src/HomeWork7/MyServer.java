@@ -38,7 +38,6 @@ public class MyServer {
 
     public static void main(String[] args) {
 
-//        ServerSocket serverSocket = null;
         AuthService baseAuthService = new BaseAuthService();
         new MyServer(baseAuthService).start();
 
@@ -75,7 +74,6 @@ public class MyServer {
     public boolean isNikTacken(String nick) {
         for (ClientHandler client : clients) {
             if (nick.equals(client.getNick())) return true;
-
         }
         return false;
     }
@@ -84,7 +82,7 @@ public class MyServer {
 
         String[] commands = str.split(" ", 3);
         String nick = commands[1];
-        System.out.println(commands[2]);
+
         if (isUserFound(nick)) {
             for (ClientHandler client : clients) {
 
@@ -107,11 +105,6 @@ public class MyServer {
 
         } else {
             findAndSend(senderName, "User not found!" + "\n");
-//            for (ClientHandler client : clients) {
-//                if (senderName.equals(client.getNick())) {
-//                    client.sendMessage("User not found!" + "\n");
-//                }
-//            }
         }
     }
 
@@ -119,7 +112,6 @@ public class MyServer {
         for (ClientHandler client : clients) {
             if (nick.equals(client.getNick())) return true;
         }
-
         return false;
     }
 

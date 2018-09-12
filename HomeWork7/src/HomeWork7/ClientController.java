@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class ClientController implements Controller{
     private final static String SERVER_ADR = "localhost";
@@ -15,7 +14,6 @@ public class ClientController implements Controller{
     private Scanner in;
     private PrintWriter out;
 
-    private String userName; //= UUID.randomUUID().toString();
 
     public ClientController(){
         initConnection();
@@ -32,13 +30,10 @@ public class ClientController implements Controller{
             sock = new Socket(SERVER_ADR, SERVER_PORT);
             in = new Scanner(sock.getInputStream());
             out = new PrintWriter(sock.getOutputStream(), true);
-//            sendMessage("/auth login1 pass1");
         } catch (IOException e){
             e.printStackTrace();
         }
 
-//        ClnConsoleThread cct = new ClnConsoleThread(sock);
-//        cct.start();
 
         new Thread(new Runnable() {
             @Override
@@ -49,11 +44,6 @@ public class ClientController implements Controller{
                         if (in.hasNext()) {
                             String w = in.nextLine();
                             if (w.equals("end session")) break;
-
-//                            if (w.length()>7&&w.substring(0, 7).equals("@Server")){
-//                                System.out.println(w);
-//                                continue;
-//                            }
                             ui.addMessage(w);
 
                         }
