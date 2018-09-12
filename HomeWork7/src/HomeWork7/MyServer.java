@@ -81,7 +81,8 @@ public class MyServer {
 
     public void sendBroadcastMessage(String str) {
         for (ClientHandler client : clients) {
-            client.sendMessage(str);
+            client.sendMessage((new Date().toString())
+                    + "\n" + str + "\n");
         }
     }
 
@@ -104,10 +105,12 @@ public class MyServer {
         System.out.println(commands[2]);
         for (ClientHandler client : clients) {
             if (nick.equals(client.getNick())) {
-                client.sendMessage("PM from " + senderName + ": " + commands[2]);
+                client.sendMessage((new Date().toString()) + "\n"
+                        + "PM from " + senderName + ": " + commands[2] + "\n");
             }
             if (senderName.equals(client.getNick())) {
-                client.sendMessage("PM to " + nick + ": " + commands[2]);
+                client.sendMessage((new Date().toString())+ "\n"
+                        + "PM to " + nick + ": " + commands[2] + "\n");
             }
 
         }
