@@ -13,14 +13,14 @@ public class MyServer {
 
     private ServerSocket serverSocket;
     private List<ClientHandler> clients = new ArrayList<>();
-    private  AuthService authService;
+    private AuthService authService;
 
-    public MyServer(AuthService authService){
+    public MyServer(AuthService authService) {
         this.authService = authService;
         try {
             serverSocket = new ServerSocket(8189);
             System.out.println("Server is started");
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Server isn't started");
             this.close();
         }
@@ -58,8 +58,8 @@ public class MyServer {
             }
 
 
-            }
         }
+    }
 
     public void sendBroadcastMessage(String str) {
         for (ClientHandler client : clients) {
@@ -85,29 +85,33 @@ public class MyServer {
         String[] commands = str.split(" ", 3);
         String nick = commands[1];
         System.out.println(commands[2]);
-        if(isUserFound(nick)){
-        for (ClientHandler client : clients) {
-            if (nick.equals(senderName)) {
-                client.sendMessage("Why do you write to yourself?");
-                return;
-            }
-            if (nick.equals(client.getNick())) {
-                client.sendMessage((new Date().toString()) + "\n"
-                        + "PM from " + senderName + ": " + commands[2] + "\n");
-            }
-
-            if (senderName.equals(client.getNick())) {
-                client.sendMessage((new Date().toString()) + "\n"
-                        + "PM to " + nick + ": " + commands[2] + "\n");
-            }
-
-        }
-    } else {
+        if (isUserFound(nick)) {
             for (ClientHandler client : clients) {
-                if (senderName.equals(client.getNick())){
-                   client.sendMessage("User not found!");
+
+                if (nick.equals(senderName)) {
+                    findAndSend(senderName, "Why do you write to yourself?" + "\n");
+                    return;
                 }
+
+                if (nick.equals(client.getNick())) {
+                    findAndSend(client.getNick(), (new Date().toString()) + "\n"
+                            + "PM from " + senderName + ": " + commands[2] + "\n");
+                }
+
+                if (senderName.equals(client.getNick())) {
+                    findAndSend(senderName, (new Date().toString()) + "\n"
+                            + "PM to " + nick + ": " + commands[2] + "\n");
+                }
+
             }
+
+        } else {
+            findAndSend(senderName, "User not found!" + "\n");
+//            for (ClientHandler client : clients) {
+//                if (senderName.equals(client.getNick())) {
+//                    client.sendMessage("User not found!" + "\n");
+//                }
+//            }
         }
     }
 
@@ -119,7 +123,13 @@ public class MyServer {
         return false;
     }
 
-
+    private void findAndSend(String addressee, String msg) {
+        for (ClientHandler client : clients) {
+            if (addressee.equals(client.getNick())) {
+                client.sendMessage(msg);
+            }
+        }
+    }
 }
 
 
