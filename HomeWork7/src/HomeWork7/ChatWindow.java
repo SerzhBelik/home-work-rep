@@ -18,6 +18,7 @@ public class ChatWindow extends JFrame implements ClientUI {
     JTextArea inputText = new JTextArea(1, 30);
     JButton enter = new JButton("Enter");
     JScrollPane jsp = new JScrollPane(inputText);
+    JScrollPane jspTextArea = new JScrollPane(textArea);
 
     public ChatWindow(Controller controller){
         this.controller = controller;
@@ -32,6 +33,9 @@ public class ChatWindow extends JFrame implements ClientUI {
         textArea.setLineWrap(true);
         textArea.setBorder(BorderFactory.createEtchedBorder(Color.WHITE, new Color(150, 200, 150)));
         textArea.setBackground(new Color(250, 255, 250));
+
+        jspTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jspTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         inputText.setLineWrap(true);
         inputText.addKeyListener(new KeyAdapter() {
@@ -54,7 +58,7 @@ public class ChatWindow extends JFrame implements ClientUI {
         });
 
         setLayout(new BorderLayout());
-        add(textArea, BorderLayout.CENTER);
+        add(jspTextArea, BorderLayout.CENTER);
         add(panel, BorderLayout.SOUTH);
 
         panel.setLayout(new BorderLayout());
