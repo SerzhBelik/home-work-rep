@@ -1,32 +1,47 @@
 package HomeWork7;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.Date;
 
 public class ClientHandler {
 
     private Socket socket;
     private MyServer server;
-    private PrintWriter printWriter;
-    private Scanner scanner;
     private String userName;
+    private Channel channel;
 
     public ClientHandler(Socket socket, MyServer server){
         this.server = server;
         this.socket = socket;
 
         try {
-            scanner = new Scanner(socket.getInputStream());
-            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            channel = ChannelBase.of(socket);
+
 
             new Thread(()-> {
                 auth();
-                while (true){
-                    String str = scanner.nextLine();
-                    if(str != null && !str.isEmpty() && !str.startsWith("/w")) server.sendBroadcastMessage(userName + ": " + str);
-                    if (str.startsWith("/w")) server.sendPrivetMessage(str, this.userName);
+                while (socket.isConnected()){
+                    Message msg = channel.getMessage();
+                    if(msg == null)continue;
+                    switch (msg.getType()){
+
+                        case AUTH_MESSAGE:
+                            sendMessage(msg.getBody());
+                            break;
+                        case EXIT_COMMAND:
+                            server.unsubscribe(this);
+                            break;
+                        case PRIVATE_MESSAGE:
+                            sendPrivetMessage(msg.getBody(), this);
+                            break;
+                        case BROADCAST_CHAT:
+                            server.sendBroadcastMessage(userName + ": " + msg.getBody());
+                            break;
+                        default:
+                            System.out.println("Invalid message type");
+                    }
+
                 }
             }).start();
         } catch (IOException e) {
@@ -35,12 +50,46 @@ public class ClientHandler {
 
     }
 
-    private void auth() {
-        while (true){
-            String str = scanner.nextLine();
+    private void sendPrivetMessage(String body, ClientHandler clientHandler) {
+        {
 
-            if(str.startsWith("/auth")){
-                String[] commands = str.split(" ");
+            String[] commands = channel.getMessage().getBody().split(" ", 3);
+            String nick = commands[1];
+
+            if (server.isUserFound(nick)) {
+                for (ClientHandler client : server.clients.values()) {
+
+                    if (nick.equals(this.userName)) {
+                        server.findAndSend(this.userName, "Why do you write to yourself?" + "\n");
+                        return;
+                    }
+
+                    if (nick.equals(client.getNick())) {
+                        server.findAndSend(client.getNick(), (new Date().toString()) + "\n"
+                                + "PM from " + this.userName + ": " + commands[2] + "\n");
+                    }
+
+                    if (this.userName.equals(client.getNick())) {
+                        server.findAndSend(this.userName, (new Date().toString()) + "\n"
+                                + "PM to " + nick + ": " + commands[2] + "\n");
+                    }
+
+                }
+
+            } else {
+                server.findAndSend(this.userName, "User not found!" + "\n");
+            }
+        }
+    }
+
+    private void auth() {
+        long time = System.nanoTime();
+        while (true){
+
+            if (!channel.hasNextLine()) continue;
+            Message message = channel.getMessage();
+            if(message.getType().equals(MessageType.AUTH_MESSAGE)){
+                String[] commands = message.getBody().split(" ");
 
                 if (commands.length >= 3){
                     String login = commands[1];
@@ -48,23 +97,34 @@ public class ClientHandler {
                     String nick = server.getAuthService().authByloginAndPassword(login, password);
 
                     if (nick == null){
-                        printWriter.println("Invalid login or password!");
+                        channel.sendMessage("Invalid login or password!");
                     } else if (server.isNikTacken(nick)){
-                        printWriter.println("Nick already taken!");
+                        channel.sendMessage("Nick already taken!");
                     } else {
                         this.userName = nick;
                         server.sendBroadcastMessage(userName + " connect to chat!");
+                        server.subscribe(this);
                         break;
                     }
                 }
             } else {
-                printWriter.println("Invalid command!");
+                channel.sendMessage("Invalid command!");
             }
+        }
+        if ((System.nanoTime()-time)/1000000000 >= 120){
+            try {
+                this.socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
         }
     }
 
     public void sendMessage(String str) {
-        printWriter.println(str);
+        channel.sendMessage(str);
     }
 
     public String getNick() {

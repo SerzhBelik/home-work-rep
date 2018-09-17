@@ -3,16 +3,13 @@ package HomeWork7;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import java.util.*;
 
 
 public class MyServer {
 
     private ServerSocket serverSocket;
-    private List<ClientHandler> clients = new ArrayList<>();
+   Map<String, ClientHandler> clients = new HashMap<>();
     private AuthService authService;
 
     public MyServer(AuthService authService) {
@@ -49,7 +46,7 @@ public class MyServer {
             try {
                 Socket accept = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(accept, this);
-                clients.add(clientHandler);
+                clients.put(clientHandler.getNick(), clientHandler);
                 System.out.println("client connect");
 
             } catch (IOException e) {
@@ -61,7 +58,7 @@ public class MyServer {
     }
 
     public void sendBroadcastMessage(String str) {
-        for (ClientHandler client : clients) {
+        for (ClientHandler client : clients.values()) {
             client.sendMessage((new Date().toString())
                     + "\n" + str + "\n");
         }
@@ -72,7 +69,7 @@ public class MyServer {
     }
 
     public boolean isNikTacken(String nick) {
-        for (ClientHandler client : clients) {
+        for (ClientHandler client : clients.values()) {
             if (nick.equals(client.getNick())) return true;
         }
         return false;
@@ -84,7 +81,7 @@ public class MyServer {
         String nick = commands[1];
 
         if (isUserFound(nick)) {
-            for (ClientHandler client : clients) {
+            for (ClientHandler client : clients.values()) {
 
                 if (nick.equals(senderName)) {
                     findAndSend(senderName, "Why do you write to yourself?" + "\n");
@@ -108,19 +105,29 @@ public class MyServer {
         }
     }
 
-    private boolean isUserFound(String nick) {
-        for (ClientHandler client : clients) {
-            if (nick.equals(client.getNick())) return true;
-        }
-        return false;
+    public boolean isUserFound(String nick) {
+        return clients.containsKey(nick);
     }
 
-    private void findAndSend(String addressee, String msg) {
-        for (ClientHandler client : clients) {
+    public void findAndSend(String addressee, String msg) {
+        for (ClientHandler client : clients.values()) {
             if (addressee.equals(client.getNick())) {
                 client.sendMessage(msg);
             }
         }
+    }
+
+    public void subscribe(ClientHandler clientHandler){
+        String msg = clientHandler.getNick()  + " connect to chat!";
+        System.out.println(msg);
+        sendBroadcastMessage(msg);
+        clients.put(clientHandler.getNick(), clientHandler);
+    }
+    public void unsubscribe(ClientHandler clientHandler){
+        String msg = clientHandler.getNick()  + " disconnected from chat!";
+        System.out.println(msg);
+        sendBroadcastMessage(msg);
+        clients.remove(clientHandler.getNick());
     }
 }
 
