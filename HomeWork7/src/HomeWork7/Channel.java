@@ -1,8 +1,6 @@
 package HomeWork7;
 
 
-import java.net.Socket;
-
 public interface Channel {
 
 
