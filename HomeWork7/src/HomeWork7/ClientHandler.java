@@ -33,7 +33,7 @@ public class ClientHandler {
                             server.unsubscribe(this);
                             break;
                         case PRIVATE_MESSAGE:
-                            sendPrivetMessage(msg.getBody(), this);
+                            sendPrivetMessage(msg.getBody());
                             break;
                         case BROADCAST_CHAT:
                             server.sendBroadcastMessage(userName + ": " + msg.getBody());
@@ -50,10 +50,10 @@ public class ClientHandler {
 
     }
 
-    private void sendPrivetMessage(String body, ClientHandler clientHandler) {
+    private void sendPrivetMessage(String body) {
         {
 
-            String[] commands = channel.getMessage().getBody().split(" ", 3);
+            String[] commands = body.split(" ", 3);
             String nick = commands[1];
 
             if (server.isUserFound(nick)) {
@@ -86,6 +86,18 @@ public class ClientHandler {
         long time = System.nanoTime();
         while (true){
 
+            if ((System.nanoTime()-time)/1000000000 >= 120){
+                System.out.println("timeout");
+                channel.sendMessage("you are disabled by timeout");
+
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+
             if (!channel.hasNextLine()) continue;
             Message message = channel.getMessage();
             if(message.getType().equals(MessageType.AUTH_MESSAGE)){
@@ -110,17 +122,9 @@ public class ClientHandler {
             } else {
                 channel.sendMessage("Invalid command!");
             }
-        }
-        if ((System.nanoTime()-time)/1000000000 >= 120){
-            try {
-                this.socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
 
         }
+
     }
 
     public void sendMessage(String str) {
