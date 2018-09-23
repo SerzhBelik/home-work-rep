@@ -45,6 +45,7 @@ public class Main {
 //        Apple weight: 0.3
 //        Apple weight: 1.0994171
 //        Apple weight: 0.71046984
+    appleBox2.printContentOfBox(); // пустая строка
 
 
 
