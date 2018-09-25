@@ -37,8 +37,6 @@ public class ClientHandler {
                         }
                         server.sendBroadcastMessage(userName + " renamed to " + newName);
                         userName = newName;
-
-                        //FIXME
                     }
                 }
             }).start();
@@ -59,9 +57,8 @@ public class ClientHandler {
                 if (commands.length >= 3){
                     String login = commands[1];
                     String password = commands[2];
-//                    String nick = server.getAuthService().authByloginAndPassword(login, password);
                     String nick = dbc.getName(login, password);
-//                    System.out.println(nick);
+
 
                     if (nick == null){
                         printWriter.println("Invalid login or password!");
