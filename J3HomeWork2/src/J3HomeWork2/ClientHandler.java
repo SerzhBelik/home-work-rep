@@ -27,7 +27,10 @@ public class ClientHandler {
                 auth();
                 while (true){
                     String str = scanner.nextLine();
-                    if(str != null && !str.isEmpty() && !str.startsWith("/")) server.sendBroadcastMessage(userName + ": " + str);
+                    if(str != null && !str.isEmpty() && !str.startsWith("/")) {
+                        server.sendBroadcastMessage(userName + ": " + str);
+                        ChatLog.writeToLog(userName + ": " + str);
+                    }
                     if (str.startsWith("/w")) server.sendPriveteMessage(str, this.userName);
                     if (str.startsWith("/rename")){
                         String newName = dbc.renameUser(this.userName, str.split(" ")[1]);
