@@ -3,9 +3,13 @@ package J3HomeWork2;
 import java.io.*;
 import java.util.Date;
 
-public class ChatLog {
+public final class ChatLog {
 
     private static String path = "D:/chatlog.txt";
+
+    private ChatLog(){
+
+    }
 
     public static void writeToLog(String msg){
 
