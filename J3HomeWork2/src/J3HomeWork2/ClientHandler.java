@@ -25,6 +25,7 @@ public class ClientHandler {
 
             new Thread(()-> {
                 auth();
+                ChatLog.getStory(printWriter, 100);
                 while (true){
                     String str = scanner.nextLine();
                     if(str != null && !str.isEmpty() && !str.startsWith("/")) {

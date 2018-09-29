@@ -4,21 +4,17 @@ import java.io.*;
 import java.util.Date;
 
 public class ChatLog {
-//private static FileOutputStream fis = null;
-//private static    FileWriter fw = null;
+
+    private static String path = "D:/chatlog.txt";
 
     public static void writeToLog(String msg){
 
         String s = (new Date().toString())
                 + "\r\n" + msg+ "\r\n" + "" + "\r\n";
         System.out.println(s);
-        FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-//            FileOutputStream fis = new FileOutputStream("chatlog.txt");
-            fw = new FileWriter("D:/chatlog.txt", true);
-            bw = new BufferedWriter(fw);
-
+            bw = new BufferedWriter(new FileWriter("D:/chatlog.txt", true));
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
         } catch (IOException e){
@@ -27,8 +23,52 @@ public class ChatLog {
         try {
             bw.write(s);
             bw.flush();
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public static void getStory(PrintWriter printWriter, int storySize) {
+
+        BufferedReader br = null;
+        String s;
+        int stringCount = getStringCount();
+
+        try {
+            br = new BufferedReader(new FileReader(path));
+            int i = 0;
+            while ((s=br.readLine()) != null){
+
+                if (i >= stringCount-storySize - 1) printWriter.println(s);
+                i++;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private static int getStringCount(){
+        BufferedReader br = null;
+        int stringCount = 0;
+        try {
+            br = new BufferedReader(new FileReader(path));
+            while ((br.readLine()) != null){
+                stringCount++;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringCount;
+    }
+
 }
