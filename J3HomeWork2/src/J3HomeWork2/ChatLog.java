@@ -14,7 +14,7 @@ public class ChatLog {
         System.out.println(s);
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter("D:/chatlog.txt", true));
+            bw = new BufferedWriter(new FileWriter(path, true));
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
         } catch (IOException e){
@@ -46,6 +46,11 @@ public class ChatLog {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e){
+            e.printStackTrace();
+        }
+        try {
+            br.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

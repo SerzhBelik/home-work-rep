@@ -65,7 +65,6 @@ public class MyServer {
             client.sendMessage((new Date().toString())
                     + "\n" + str + "\n");
         }
-
     }
 
     public AuthService getAuthService() {

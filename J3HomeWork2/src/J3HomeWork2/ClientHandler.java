@@ -54,7 +54,6 @@ public class ClientHandler {
         while (true){
             String str = scanner.nextLine();
 
-
             if(str.startsWith("/auth")){
                 String[] commands = str.split(" ");
 
@@ -62,7 +61,6 @@ public class ClientHandler {
                     String login = commands[1];
                     String password = commands[2];
                     String nick = dbc.getName(login, password);
-
 
                     if (nick == null){
                         printWriter.println("Invalid login or password!");
