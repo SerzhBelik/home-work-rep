@@ -20,6 +20,8 @@ public class MyServer {
         try {
             serverSocket = new ServerSocket(8189);
             System.out.println("Server is started");
+            ABCPrinter abcPrinter = new ABCPrinter();
+            abcPrinter.ABCPrint();
         } catch (IOException e) {
             System.out.println("Server isn't started");
             this.close();
