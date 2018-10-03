@@ -6,7 +6,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class MyServer {
@@ -14,14 +15,15 @@ public class MyServer {
     private ServerSocket serverSocket;
     private List<ClientHandler> clients = new ArrayList<>();
     private AuthService authService;
+    private ExecutorService executorService;
 
     public MyServer(AuthService authService) {
         this.authService = authService;
+        executorService = Executors.newCachedThreadPool();
         try {
             serverSocket = new ServerSocket(8189);
             System.out.println("Server is started");
-            ABCPrinter abcPrinter = new ABCPrinter();
-            abcPrinter.ABCPrint();
+//            new ABCPrinter();
         } catch (IOException e) {
             System.out.println("Server isn't started");
             this.close();
@@ -42,6 +44,7 @@ public class MyServer {
 
         AuthService baseAuthService = new BaseAuthService();
         new MyServer(baseAuthService).start();
+
 
     }
 
@@ -123,5 +126,9 @@ public class MyServer {
                 client.sendMessage(msg);
             }
         }
+    }
+
+    public ExecutorService getExecutorService (){
+        return this.executorService;
     }
 }

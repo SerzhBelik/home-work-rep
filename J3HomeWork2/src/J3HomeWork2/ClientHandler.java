@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
 
 public class ClientHandler {
 
@@ -14,16 +15,17 @@ public class ClientHandler {
     private Scanner scanner;
     private String userName;
     DBConnector dbc = new DBConnector();
+    ExecutorService executorService;
 
     public ClientHandler(Socket socket, MyServer server){
         this.server = server;
         this.socket = socket;
-
+        this.executorService = server.getExecutorService();
         try {
             scanner = new Scanner(socket.getInputStream());
             printWriter = new PrintWriter(socket.getOutputStream(), true);
 
-            new Thread(()-> {
+            executorService.execute(() ->{
                 auth();
                 ChatLog.getStory(printWriter, 100);
                 while (true){
@@ -43,7 +45,28 @@ public class ClientHandler {
                         userName = newName;
                     }
                 }
-            }).start();
+            });
+//            new Thread(()-> {
+//                auth();
+//                ChatLog.getStory(printWriter, 100);
+//                while (true){
+//                    String str = scanner.nextLine();
+//                    if(str != null && !str.isEmpty() && !str.startsWith("/")) {
+//                        server.sendBroadcastMessage(userName + ": " + str);
+//                        ChatLog.writeToLog(userName + ": " + str);
+//                    }
+//                    if (str.startsWith("/w")) server.sendPriveteMessage(str, this.userName);
+//                    if (str.startsWith("/rename")){
+//                        String newName = dbc.renameUser(this.userName, str.split(" ")[1]);
+//                        if (newName == null) {
+//                            printWriter.println("This name is already taken!");
+//                            continue;
+//                        }
+//                        server.sendBroadcastMessage(userName + " renamed to " + newName);
+//                        userName = newName;
+//                    }
+//                }
+//            }).start();
         } catch (IOException e) {
             e.printStackTrace();
         }

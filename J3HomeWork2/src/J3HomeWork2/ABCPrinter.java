@@ -4,7 +4,7 @@ public class ABCPrinter {
 
     boolean flags[] = {true, false, false};
 
-    public void ABCPrint (){
+    public ABCPrinter (){
           new Thread(() -> {
               printLetter("A", 0);
           }).start();
