@@ -14,16 +14,13 @@ public class MyServer {
 
     private ServerSocket serverSocket;
     private List<ClientHandler> clients = new ArrayList<>();
-    private AuthService authService;
     private ExecutorService executorService;
 
-    public MyServer(AuthService authService) {
-        this.authService = authService;
+    public MyServer() {
         executorService = Executors.newCachedThreadPool();
         try {
             serverSocket = new ServerSocket(8189);
             System.out.println("Server is started");
-//            new ABCPrinter();
         } catch (IOException e) {
             System.out.println("Server isn't started");
             this.close();
@@ -41,11 +38,9 @@ public class MyServer {
 
 
     public static void main(String[] args) {
-
-        AuthService baseAuthService = new BaseAuthService();
-        new MyServer(baseAuthService).start();
-
-
+        MyServer myServer = new MyServer();
+        myServer.start();
+        myServer.getExecutorService().shutdown();
     }
 
     public void start() {
@@ -70,10 +65,6 @@ public class MyServer {
             client.sendMessage((new Date().toString())
                     + "\n" + str + "\n");
         }
-    }
-
-    public AuthService getAuthService() {
-        return this.authService;
     }
 
     public boolean isNikTacken(String nick) {
