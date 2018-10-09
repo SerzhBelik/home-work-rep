@@ -1,5 +1,4 @@
-package J3HomeWork2;
-
+package HomeWork5;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -69,4 +68,3 @@ public class DBConnector {
     }
 
 }
-

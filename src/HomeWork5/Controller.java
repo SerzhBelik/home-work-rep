@@ -1,4 +1,4 @@
-package J3HomeWork2;
+package HomeWork5;
 
 
 public interface Controller {
@@ -8,4 +8,3 @@ public interface Controller {
 
     void showUI(ClientUI clientUI);
 }
-

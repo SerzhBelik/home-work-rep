@@ -1,9 +1,7 @@
-package J3HomeWork2;
-
+package HomeWork5;
 
 public interface ClientUI {
     void showUI();
 
     void addMessage(String w);
 }
-

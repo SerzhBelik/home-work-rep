@@ -1,5 +1,4 @@
-package J3HomeWork2;
-
+package HomeWork5;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -88,4 +87,3 @@ public class ClientHandler {
         return this.userName;
     }
 }
-
