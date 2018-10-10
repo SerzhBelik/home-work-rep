@@ -31,10 +31,12 @@ public class ClientHandler {
                     String str = scanner.nextLine();
                     if(str != null && !str.isEmpty() && !str.startsWith("/")) {
                         server.sendBroadcastMessage(userName + ": " + str);
+                        server.writeLog(userName + " отправил сообщение");
                         ChatLog.writeToLog(userName + ": " + str);
                     }
                     if (str.startsWith("/w")) server.sendPriveteMessage(str, this.userName);
                     if (str.startsWith("/rename")){
+                        server.writeLog(userName + " отпривил команду на изменение имени");
                         String newName = dbc.renameUser(this.userName, str.split(" ")[1]);
                         if (newName == null) {
                             printWriter.println("This name is already taken!");
@@ -70,6 +72,7 @@ public class ClientHandler {
                     } else {
                         this.userName = nick;
                         server.sendBroadcastMessage(userName + " connect to chat!");
+                        server.writeLog(userName + " прошел авторизацию");
                         break;
                     }
                 }

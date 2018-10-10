@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 
 public class MyServer {
 
+    private static Logger log = Logger.getLogger(MyServer.class.getName());
     private ServerSocket serverSocket;
     private List<ClientHandler> clients = new ArrayList<>();
     private ExecutorService executorService;
@@ -20,9 +23,16 @@ public class MyServer {
         executorService = Executors.newCachedThreadPool();
         try {
             serverSocket = new ServerSocket(8189);
-            System.out.println("Server is started");
+//            System.out.println("Server is started");
+            log.info("Server is started");
+            ArrChanger arrChanger = new ArrChanger();
+            int[] arr = {1, 2, 3, 4, 5, 6, 7};
+//            arrChanger.cutOff(arr, 4);
+            boolean b = arrChanger.findValue(arr, 3, 4);
+            System.out.println(b);
         } catch (IOException e) {
-            System.out.println("Server isn't started");
+//            System.out.println("Server isn't started");
+            log.warning("Server isn't started");
             this.close();
         }
     }
@@ -50,7 +60,8 @@ public class MyServer {
                 Socket accept = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(accept, this);
                 clients.add(clientHandler);
-                System.out.println("client connect");
+//                System.out.println("client connect");
+                log.info("client connect");
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -63,7 +74,7 @@ public class MyServer {
     public void sendBroadcastMessage(String str) {
         for (ClientHandler client : clients) {
             client.sendMessage((new Date().toString())
-                    + "\n" + str + "\n");
+                    + System.lineSeparator() + str + System.lineSeparator());
         }
     }
 
@@ -83,24 +94,24 @@ public class MyServer {
             for (ClientHandler client : clients) {
 
                 if (nick.equals(senderName)) {
-                    findAndSend(senderName, "Why do you write to yourself?" + "\n");
+                    findAndSend(senderName, "Why do you write to yourself?" + System.lineSeparator());
                     return;
                 }
 
                 if (nick.equals(client.getNick())) {
-                    findAndSend(client.getNick(), (new Date().toString()) + "\n"
-                            + "PM from " + senderName + ": " + commands[2] + "\n");
+                    findAndSend(client.getNick(), (new Date().toString()) + System.lineSeparator()
+                            + "PM from " + senderName + ": " + commands[2] + System.lineSeparator());
                 }
 
                 if (senderName.equals(client.getNick())) {
-                    findAndSend(senderName, (new Date().toString()) + "\n"
-                            + "PM to " + nick + ": " + commands[2] + "\n");
+                    findAndSend(senderName, (new Date().toString()) + System.lineSeparator()
+                            + "PM to " + nick + ": " + commands[2] + System.lineSeparator());
                 }
-
+                log.info(senderName + " отправил личное сообщение для " + nick);
             }
 
         } else {
-            findAndSend(senderName, "User not found!" + "\n");
+            findAndSend(senderName, "User not found!" + System.lineSeparator());
         }
     }
 
@@ -121,5 +132,10 @@ public class MyServer {
 
     public ExecutorService getExecutorService (){
         return this.executorService;
+    }
+
+
+    public  void writeLog(String msg){
+        log.info(msg);
     }
 }
