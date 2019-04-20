@@ -4,7 +4,6 @@ package server;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -25,7 +24,6 @@ public class MyServer implements Runnable {
     private ServerSocket serverSocket;
     private final ByteBuffer welcomBuf = ByteBuffer.wrap("Welcom to chat!\n".getBytes());
 
-//    private ServerSocket serverSocket;
     private List<ClientHandler> clients = new ArrayList<>();
     private AuthService authService;
 
@@ -37,13 +35,7 @@ public class MyServer implements Runnable {
         this.serverSocketChannel.configureBlocking(false);
         this.serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         this.serverSocket = serverSocketChannel.socket();
-//        try {
-//            serverSocket = new ServerSocket(8189);
-//            System.out.println("Server is started");
-//        } catch (IOException e) {
-//            System.out.println("Server isn't started");
-//            this.close();
-//        }
+
     }
 
     @Override
@@ -116,25 +108,12 @@ public class MyServer implements Runnable {
 
     public static void main(String[] args) throws IOException {
 
-//        AuthService baseAuthService = new BaseAuthService();
         new Thread(new MyServer()).start();
-//        new MyServer(baseAuthService).start();
 
     }
 
     public void start() {
         while (true) {
-
-//            try {
-//                Socket accept = serverSocket.accept();
-//                ClientHandler clientHandler = new ClientHandler(accept, this);
-//                clients.add(clientHandler);
-//                System.out.println("client connect");
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
 
         }
     }
@@ -150,10 +129,7 @@ public class MyServer implements Runnable {
                 byteBuffer.rewind();
             }
         }
-//        for (ClientHandler client : clients) {
-//            client.sendMessage((new Date().toString())
-//                    + "\n" + str + "\n");
-//        }
+
     }
 
     public AuthService getAuthService() {

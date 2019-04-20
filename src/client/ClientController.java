@@ -48,17 +48,7 @@ public class ClientController implements Controller{
 
             selector = Selector.open();
             channel.register(selector, SelectionKey.OP_CONNECT);
-//            SocketChannel socket = this.initiateConnection();
-//            selector = Selector.open();
-//            channel = SocketChannel.open();
-//            channel.configureBlocking(false);
-//            channel.register(selector, SelectionKey.OP_CONNECT);
-//            channel.connect(new InetSocketAddress(SERVER_ADR, SERVER_PORT));
-//            socket = new Socket(SERVER_ADR, SERVER_PORT);
-//            oos = new DataOutputStream(socket.getOutputStream());
-//            ois = new DataInputStream(socket.getInputStream());
-//            in = new Scanner(sock.getInputStream());
-//            out = new PrintWriter(sock.getOutputStream(), true);
+
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -139,14 +129,6 @@ public class ClientController implements Controller{
                 byteBuffer.rewind();
             }
         }
-
-
-//        try {
-//            oos.write(msg.getBytes());
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
-
 
     }
 
